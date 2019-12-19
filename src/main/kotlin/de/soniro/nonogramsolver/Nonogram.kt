@@ -19,10 +19,7 @@ class Nonogram(val rows: Array<IntArray>, val columns: Array<IntArray>) {
         columnOffset = longestSubArray(rows)
         rowOffset = longestSubArray(columns)
         grid = Array(numberOfRows()) { row -> Array<Any>(numberOfColumns()) {
-                column ->
-            if (row < rowOffset || column < columnOffset) EMPTY
-            else if (row % 2 == 0 && column % 2 == 0) FILL
-            else NOT_FILLED
+                column -> EMPTY
         } }
         writeColumns()
         writeRows()
