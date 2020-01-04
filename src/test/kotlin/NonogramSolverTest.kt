@@ -1,6 +1,4 @@
 import de.soniro.nonogramsolver.Nonogram
-import de.soniro.nonogramsolver.solveNonogram
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 internal class NonogramSolverTest {
@@ -14,7 +12,7 @@ internal class NonogramSolverTest {
         val column1 : IntArray = intArrayOf(1, 1)
         val column2 : IntArray = intArrayOf(1)
         val column3 : IntArray = intArrayOf(1, 1)
-        val nonogram : Nonogram = Nonogram(arrayOf(row1, row2, row3), arrayOf(column1, column2, column3))
+        val nonogram = Nonogram(arrayOf(row1, row2, row3), arrayOf(column1, column2, column3))
 
         nonogram.print()
     }
@@ -28,7 +26,7 @@ internal class NonogramSolverTest {
         val column1 : IntArray = intArrayOf(10, 11)
         val column2 : IntArray = intArrayOf(12)
         val column3 : IntArray = intArrayOf(13, 14)
-        val nonogram : Nonogram = Nonogram(arrayOf(row1, row2, row3), arrayOf(column1, column2, column3))
+        val nonogram = Nonogram(arrayOf(row1, row2, row3), arrayOf(column1, column2, column3))
 
         nonogram.print()
     }

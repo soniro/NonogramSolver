@@ -11,7 +11,7 @@ class Nonogram(val rows: Array<IntArray>, val columns: Array<IntArray>) {
         const val UNKNOWN = "?"
     }
 
-    private val grid: Array<Array<Any>>
+    val grid: Array<Array<Any>>
     private val columnOffset: Int
     private val rowOffset: Int
 
@@ -19,7 +19,7 @@ class Nonogram(val rows: Array<IntArray>, val columns: Array<IntArray>) {
         columnOffset = longestSubArray(rows)
         rowOffset = longestSubArray(columns)
         grid = Array(numberOfRows()) { row -> Array<Any>(numberOfColumns()) {
-                column -> EMPTY
+                column -> if (row < columnOffset || column < rowOffset) EMPTY else UNKNOWN
         } }
         writeColumns()
         writeRows()
@@ -67,6 +67,24 @@ class Nonogram(val rows: Array<IntArray>, val columns: Array<IntArray>) {
                 print("$cell ")
             }
             println()
+        }
+    }
+
+    fun fillTrivialRows() {
+        for (row in rows) {
+            if (row.sum() + row.size-1 == columns.size) {
+                var index = columnOffset
+                for (value in row) {
+                    repeat(value) {
+                        grid[rowOffset][index] = FILL
+                        index++
+                    }
+                    if (index < numberOfColumns() - 1) {
+                        grid[rowOffset][index] = NOT_FILLED
+                        index++
+                    }
+                }
+            }
         }
     }
 }
