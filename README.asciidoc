@@ -1,6 +1,6 @@
 = NonogramSolver image:https://github.com/soniro/NonogramSolver/workflows/Build%20%26%20Test/badge.svg[Build status]
+:icons: font
 
-
-NOTE:  **This is work in progress and will not solve nonograms yet.**
+WARNING:  **This is work in progress and will not solve nonograms yet.**
 
 A simple application to solve nonograms
