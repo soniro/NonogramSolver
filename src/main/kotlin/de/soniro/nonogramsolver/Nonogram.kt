@@ -19,7 +19,7 @@ class Nonogram(val rows: Array<IntArray>, val columns: Array<IntArray>) {
         columnOffset = longestSubArray(rows)
         rowOffset = longestSubArray(columns)
         grid = Array(numberOfRows()) { row -> Array<Any>(numberOfColumns()) {
-                column -> if (row < columnOffset || column < rowOffset) EMPTY else UNKNOWN
+                column -> if (row > columnOffset && column > rowOffset) UNKNOWN else EMPTY
         } }
         writeColumns()
         writeRows()
@@ -71,16 +71,36 @@ class Nonogram(val rows: Array<IntArray>, val columns: Array<IntArray>) {
     }
 
     fun fillTrivialRows() {
-        for (row in rows) {
+        for ((currentRowIndex, row) in rows.withIndex()) {
             if (row.sum() + row.size-1 == columns.size) {
                 var index = columnOffset
+                val rowIndex = rowOffset + currentRowIndex
                 for (value in row) {
                     repeat(value) {
-                        grid[rowOffset][index] = FILL
+                        grid[rowIndex][index] = FILL
                         index++
                     }
                     if (index < numberOfColumns() - 1) {
-                        grid[rowOffset][index] = NOT_FILLED
+                        grid[rowIndex][index] = NOT_FILLED
+                        index++
+                    }
+                }
+            }
+        }
+    }
+
+    fun fillTrivialColumns() {
+        for ((currentColumnIndex, column) in columns.withIndex()) {
+            if (column.sum() + column.size-1 == rows.size) {
+                var index = rowOffset
+                val columnIndex = columnOffset + currentColumnIndex
+                for (value in column) {
+                    repeat(value) {
+                        grid[index][columnIndex] = FILL
+                        index++
+                    }
+                    if (index < numberOfRows() - 1) {
+                        grid[index][columnIndex] = NOT_FILLED
                         index++
                     }
                 }
