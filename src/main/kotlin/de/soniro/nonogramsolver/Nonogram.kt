@@ -1,7 +1,5 @@
 package de.soniro.nonogramsolver
 
-import kotlin.math.max
-
 class Nonogram(val rows: Array<IntArray>, val columns: Array<IntArray>) {
 
     companion object {
@@ -45,29 +43,15 @@ class Nonogram(val rows: Array<IntArray>, val columns: Array<IntArray>) {
         }
     }
 
-    private fun numberOfColumns() : Int {
-        return columnOffset + columns.size
-    }
+    private fun numberOfColumns() : Int = columnOffset + columns.size
 
-    private fun numberOfRows() : Int {
-        return rowOffset + rows.size
-    }
+    private fun numberOfRows() : Int = rowOffset + rows.size
 
-    private fun longestSubArray(array: Array<IntArray>): Int {
-        var longestArray = 0
-        for (subarray in array) {
-            longestArray = max(longestArray, subarray.size)
-        }
-        return longestArray
-    }
+    private fun longestSubArray(array: Array<IntArray>): Int = array.maxBy { it.size }!!.size
 
-    fun print() {
-        for (row in grid) {
-            for (cell in row) {
-                print("$cell ")
-            }
-            println()
-        }
+    fun print() = grid.forEach { row ->
+        row.forEach { cell -> print("$cell ") }
+        println()
     }
 
     fun fillTrivialRows() {
