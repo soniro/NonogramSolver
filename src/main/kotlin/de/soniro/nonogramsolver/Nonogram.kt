@@ -16,36 +16,36 @@ class Nonogram(val rows: Array<IntArray>, val columns: Array<IntArray>) {
     init {
         columnOffset = longestSubArray(rows)
         rowOffset = longestSubArray(columns)
-        grid = Array(numberOfRows()) { row -> Array<Any>(numberOfColumns()) {
-                column -> if (row > columnOffset && column > rowOffset) UNKNOWN else EMPTY
-        } }
+        grid = Array(numberOfRows()) { row ->
+            Array<Any>(numberOfColumns()) { column ->
+                if (row > columnOffset && column > rowOffset) UNKNOWN else EMPTY
+            }
+        }
         writeColumns()
         writeRows()
     }
 
-    private fun writeColumns() {
-        for (i in rowOffset downTo 1) {
-            for (j in 0..columns.size-1) {
+    private fun writeColumns() =
+        (rowOffset downTo 1).forEach { i ->
+            (0..columns.size - 1).forEach { j ->
                 if (columns[j].size >= i) {
-                    grid[rowOffset-i][columnOffset+j] = columns[j][columns[j].size-i]
+                    grid[rowOffset - i][columnOffset + j] = columns[j][columns[j].size - i]
                 }
             }
         }
-    }
 
-    private fun writeRows() {
-        for (i in columnOffset downTo 1) {
-            for (j in 0..rows.size-1) {
+    private fun writeRows() =
+        (columnOffset downTo 1).forEach { i ->
+            (0..rows.size - 1).forEach { j ->
                 if (rows[j].size >= i) {
-                    grid[rowOffset+j][columnOffset-i] = rows[j][rows[j].size-i]
+                    grid[rowOffset + j][columnOffset - i] = rows[j][rows[j].size - i]
                 }
             }
         }
-    }
 
-    private fun numberOfColumns() : Int = columnOffset + columns.size
+    private fun numberOfColumns(): Int = columnOffset + columns.size
 
-    private fun numberOfRows() : Int = rowOffset + rows.size
+    private fun numberOfRows(): Int = rowOffset + rows.size
 
     private fun longestSubArray(array: Array<IntArray>): Int = array.maxBy { it.size }!!.size
 
@@ -56,7 +56,7 @@ class Nonogram(val rows: Array<IntArray>, val columns: Array<IntArray>) {
 
     fun fillTrivialRows() {
         for ((currentRowIndex, row) in rows.withIndex()) {
-            if (row.sum() + row.size-1 == columns.size) {
+            if (row.sum() + row.size - 1 == columns.size) {
                 var index = columnOffset
                 val rowIndex = rowOffset + currentRowIndex
                 for (value in row) {
@@ -75,7 +75,7 @@ class Nonogram(val rows: Array<IntArray>, val columns: Array<IntArray>) {
 
     fun fillTrivialColumns() {
         for ((currentColumnIndex, column) in columns.withIndex()) {
-            if (column.sum() + column.size-1 == rows.size) {
+            if (column.sum() + column.size - 1 == rows.size) {
                 var index = rowOffset
                 val columnIndex = columnOffset + currentColumnIndex
                 for (value in column) {
