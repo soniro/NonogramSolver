@@ -1,13 +1,17 @@
 package de.soniro.nonogramsolver
 
-class Nonogram(val rows: Array<IntArray>, val columns: Array<IntArray>) {
+import de.soniro.nonogramsolver.Cell.*
 
-    companion object {
-        const val FILL = "\u2588"
-        const val EMPTY = " "
-        const val NOT_FILLED = "X"
-        const val UNKNOWN = "?"
-    }
+enum class Cell(val char: Char) {
+    FILL('\u2588'),
+    EMPTY(' '),
+    NOT_FILLED('X'),
+    UNKNOWN('?');
+
+    override fun toString(): String = "$char"
+}
+
+class Nonogram(val rows: Array<IntArray>, val columns: Array<IntArray>) {
 
     val grid: Array<Array<Any>>
     private val columnOffset: Int
@@ -54,20 +58,21 @@ class Nonogram(val rows: Array<IntArray>, val columns: Array<IntArray>) {
         println()
     }
 
-    fun fillTrivialRows() {
-        for ((currentRowIndex, row) in rows.withIndex()) {
-            if (row.sum() + row.size - 1 == columns.size) {
-                var index = columnOffset
-                val rowIndex = rowOffset + currentRowIndex
-                for (value in row) {
-                    repeat(value) {
-                        grid[rowIndex][index] = FILL
-                        index++
-                    }
-                    if (index < numberOfColumns() - 1) {
-                        grid[rowIndex][index] = NOT_FILLED
-                        index++
-                    }
+    fun fillTrivialRows() =
+        rows.forEachIndexed { index, row -> fillRowIfTrivial(index, row) }
+
+    fun fillRowIfTrivial(currentRowIndex: Int, row: IntArray) {
+        if (row.sum() + row.size - 1 == columns.size) {
+            var index = columnOffset
+            val rowIndex = rowOffset + currentRowIndex
+            row.forEach { value ->
+                repeat(value) {
+                    grid[rowIndex][index] = FILL
+                    index++
+                }
+                if (index < numberOfColumns() - 1) {
+                    grid[rowIndex][index] = NOT_FILLED
+                    index++
                 }
             }
         }
@@ -89,6 +94,12 @@ class Nonogram(val rows: Array<IntArray>, val columns: Array<IntArray>) {
                     }
                 }
             }
+        }
+    }
+
+    fun writeColumn(columnWithContent: Array<Cell>, columnIndex: Int) {
+        columnWithContent.forEachIndexed { cellIndex, cell ->
+            grid[cellIndex + rowOffset][columnIndex] = cell
         }
     }
 }
